@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BookFlix</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">BOOKFLIX</div>
+
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#trending">Trending</a>
+        <a href="#top">Top Rated</a>
+        <a href="#recommended">Recommended</a>
+    </div>
+
+    <form method="POST" action="/#search-results" class="nav-search">
+        <input type="text" name="book" placeholder="Search books..." value="{{ search_text }}">
+        <button>Search</button>
+    </form>
+</nav>
+
+<section class="hero" id="home" style="background-image: linear-gradient(to right, #000 25%, rgba(0,0,0,0.55), rgba(0,0,0,0.15)), url('{{ hero_book.image }}');">
+    <div class="hero-content">
+        <h1>{{ hero_book.title }}</h1>
+        <p class="meta">⭐ {{ hero_book.rating }} &nbsp; | &nbsp; {{ hero_book.tag }} &nbsp; | &nbsp; {{ hero_book.author }}</p>
+        <p class="desc">{{ hero_book.description }}</p>
+
+        <div class="hero-buttons">
+            <button onclick='openModal({{ hero_book|tojson }})'>▶ View Details</button>
+            <a href="#trending">More Books</a>
+        </div>
+    </div>
+</section>
+
+{% if search_results %}
+<section class="row-section" id="search-results">
+    <h2>Search Results for "{{ search_text }}"</h2>
+    <div class="book-row">
+        {% for book in search_results %}
+        <div class="book-card" onclick='openModal({{ book|tojson }})'>
+            <img src="{{ book.image }}" onerror="this.src='https://dummyimage.com/300x450/111111/ffffff&text=Book';">
+            <div class="card-info">
+                <h3>{{ book.title }}</h3>
+                <p>⭐ {{ book.rating }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="row-section" id="trending">
+    <h2>Trending Now</h2>
+    <div class="book-row">
+        {% for book in trending %}
+        <div class="book-card" onclick='openModal({{ book|tojson }})'>
+            <img src="{{ book.image }}" onerror="this.src='https://dummyimage.com/300x450/111111/ffffff&text=Book';">
+            <div class="card-info">
+                <h3>{{ book.title }}</h3>
+                <p>⭐ {{ book.rating }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="row-section" id="top">
+    <h2>Top Rated Books</h2>
+    <div class="book-row">
+        {% for book in top_rated %}
+        <div class="book-card" onclick='openModal({{ book|tojson }})'>
+            <img src="{{ book.image }}" onerror="this.src='https://dummyimage.com/300x450/111111/ffffff&text=Book';">
+            <div class="card-info">
+                <h3>{{ book.title }}</h3>
+                <p>⭐ {{ book.rating }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="row-section" id="recommended">
+    <h2>Recommended For You</h2>
+    <div class="book-row">
+        {% for book in recommended %}
+        <div class="book-card" onclick='openModal({{ book|tojson }})'>
+            <img src="{{ book.image }}" onerror="this.src='https://dummyimage.com/300x450/111111/ffffff&text=Book';">
+            <div class="card-info">
+                <h3>{{ book.title }}</h3>
+                <p>⭐ {{ book.rating }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <button class="close" onclick="closeModal()">×</button>
+        <img id="modalImage">
+        <div class="modal-text">
+            <span id="modalTag"></span>
+            <h2 id="modalTitle"></h2>
+            <h4 id="modalAuthor"></h4>
+            <p id="modalDesc"></p>
+            <h3 id="modalRating"></h3>
+        </div>
+    </div>
+</div>
+
+<script>
+function openModal(book) {
+    document.getElementById("modalImage").src = book.image;
+    document.getElementById("modalTitle").innerText = book.title;
+    document.getElementById("modalAuthor").innerText = "By " + book.author;
+    document.getElementById("modalDesc").innerText = book.description;
+    document.getElementById("modalRating").innerText = "⭐ Rating: " + book.rating;
+    document.getElementById("modalTag").innerText = book.tag;
+    document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+</script>
+
+</body>
+</html>
