@@ -3,8 +3,8 @@ import pandas as pd
 
 app = Flask(__name__)
 
-books = pd.read_csv("books.csv", sep=";", encoding="latin-1", on_bad_lines="skip")
-ratings = pd.read_csv("ratings.csv", sep=";", encoding="latin-1", on_bad_lines="skip")
+books = pd.read_csv("books_small.csv", sep=";", encoding="latin-1", on_bad_lines="skip")
+ratings = pd.read_csv("ratings_small.csv", sep=";", encoding="latin-1", on_bad_lines="skip")
 
 books = books[["ISBN", "Book-Title", "Book-Author", "Image-URL-L"]]
 books.columns = ["isbn", "title", "author", "image"]
